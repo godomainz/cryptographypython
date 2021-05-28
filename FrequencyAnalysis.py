@@ -17,24 +17,32 @@ bpmb bpr xjhhjcwko wi bpr sujsru msshwvmbwjk mkd
 wkbrusurbmbwjk w jxxru yt bprjuwri wk bpr pjsr bpmb bpr
 riirkvr jx jqwkmcmk qmumbr cwhh urymwk wkbmvb"""
 
-alphabet = string.ascii_lowercase
+class Attack:
+    def __init__(self):
+        self.alphabet = string.ascii_lowercase
+        self.freq = {}
 
-freq = {}
-for c in alphabet:
-    freq[c] = 0
+    def calculate_freq(self, cipher):
+        for c in self.alphabet:
+            self.freq[c] = 0
 
-letter_count = 0
-for c in cipher:
-    if c in freq:
-        freq[c] += 1
-        letter_count += 1
+            letter_count = 0
+            for c in cipher:
+                if c in self.freq:
+                    self.freq[c] += 1
+                    letter_count += 1
 
-for c in freq:
-    freq[c] = round(freq[c]/letter_count, 4)
+            for c in self.freq:
+                self.freq[c] = round(self.freq[c]/letter_count, 4)
 
-new_line_count = 0
-for c in freq:
-    print(c, ':', freq[c], ' ', end='')
-    if new_line_count % 3 == 2:
-        print()
-    new_line_count += 1
+    def print_freq(self):
+        new_line_count = 0
+        for c in self.freq:
+            print(c, ':', self.freq[c], ' ', end='')
+            if new_line_count % 3 == 2:
+                print()
+            new_line_count += 1
+
+attack = Attack()
+attack.calculate_freq(cipher)
+attack.print_freq()
