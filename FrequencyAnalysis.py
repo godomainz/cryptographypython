@@ -20,6 +20,8 @@ riirkvr jx jqwkmcmk qmumbr cwhh urymwk wkbmvb"""
 class Attack:
     def __init__(self):
         self.alphabet = string.ascii_lowercase
+        self.plain_chars_left = string.ascii_lowercase
+        self.cipher_chars_left = string.ascii_lowercase
         self.freq = {}
         self.freq_eng = {'a': 0.0817, 'b': 0.0150, 'c': 0.0278, 'd': 0.0425, 'e': 0.1270, 'f': 0.0223,
                'g': 0.0202, 'h': 0.0609, 'i': 0.0697, 'j': 0.0015, 'k': 0.0077, 'l': 0.0403,
@@ -56,6 +58,25 @@ class Attack:
                 map[plain_char] = round(abs(self.freq[cipher_char] - self.freq_eng[plain_char]), 4)
             self.mappings[cipher_char] = sorted(map.items(), key=operator.itemgetter(1))
 
+    def guess_key(self):
+        key = {}
+        for cipher_char in self.cipher_chars_left:
+            for plain_char, diff in self.mappings[cipher_char]:
+                if plain_char in self.plain_chars_left:
+                    key[cipher_char] = plain_char
+                    self.plain_chars_left = self.plain_chars_left.replace(plain_char, '')
+                    break
+        return key
+
+def decrypt(key, cypher):
+    message = ""
+    for c in cypher:
+        if c in key:
+            message += key[c]
+        else:
+            message += c
+    return message
+
 attack = Attack()
 attack.calculate_freq(cipher)
 attack.print_freq()
@@ -63,3 +84,11 @@ attack.calculate_matches()
 print()
 for c in attack.mappings:
     print(c, attack.mappings[c])
+
+key = attack.guess_key()
+print('*************************key**************************')
+print(key)
+
+message = decrypt(key, cipher)
+print('*************************message**************************')
+print(message)
