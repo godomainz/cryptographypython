@@ -9,6 +9,7 @@ def xor_bytes(key_stream, message):
 
 message = "YOU ARE AWESOME"
 message = message.encode()
+print(message)
 key_stream = generate_key_stream(len(message))
 cipher = xor_bytes(key_stream, message)
 print(key_stream)
