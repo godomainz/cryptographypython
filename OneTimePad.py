@@ -7,11 +7,16 @@ def xor_bytes(key_stream, message):
     length = min(len(key_stream), len(message))
     return bytes([key_stream[i] ^ message[i] for i in range(length)])
 
-message = "YOU ARE AWESOME"
+
+# This is done by enemy
+message = "DO ATTACK"
 message = message.encode()
-print(message)
 key_stream = generate_key_stream(len(message))
 cipher = xor_bytes(key_stream, message)
-print(key_stream)
+
+# This is us trying to break it
 print(cipher)
-print(xor_bytes(key_stream, cipher))
+message = "NO ATTACK"
+message = message.encode()
+guesskey_stream = xor_bytes(message, cipher)
+print(xor_bytes(guesskey_stream, cipher))
