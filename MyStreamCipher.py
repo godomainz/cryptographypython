@@ -21,17 +21,23 @@ def transmit(cipher, likely):
         b.append(c)
     return bytes(b)
 
+def modification(cipher):
+    mod = [0]*len(cipher)
+    mod[10] = ord(' ') ^ ord('1')
+    mod[11] = ord(' ') ^ ord('0')
+    mod[12] = ord('1') ^ ord('0')
+    return bytes(mod[i] ^ cipher[i] for i in range(len(cipher)))
+
+# This is Alice
 key = KeyStream(10)
-# print("key1 ",key)
-message = "Hello World! I am here to declare that I will take over the universe and become the supreme emperor".encode()
+message = "Send Bob:   10$".encode()
 print(message)
 cipher = encrypt(key, message)
 print(cipher)
 
-cipher = transmit(cipher, 5)
+# This is Bob
+cipher = modification(cipher)
 
+# This is Bank
 key = KeyStream(10)
-# print("key2 ",key)
 print(encrypt(key, cipher))
-# for i in range(10):
-#     print(key.get_key_byte())
