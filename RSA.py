@@ -40,7 +40,7 @@ def get_d(e, lambda_n):
 # Key generation done by Alice
 # Step 1: Generate two distinct primes
 
-size = 300
+size = 2048
 p = get_prime(size)
 q = get_prime(size)
 while True:
