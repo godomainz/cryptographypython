@@ -66,6 +66,11 @@ print("Public exponent :", e)
 d = get_d(e, lambda_n)
 print("Secret exponent :", d)
 
+def factor(n):
+    for p in range(2, n):
+        if n % p == 0:
+            return p, n//p
+
 # Done with key generation
 print("Public key (e,n)", e, n)
 print("Secret key (d)", d)
@@ -78,3 +83,19 @@ print("Bob sends",c)
 # This is Alice decrypting the cipher
 m = c**d % n
 print("Alice message", m)
+
+# This is Eves view
+print("Eve sees the following:")
+print(" Public key (e,n)", e, n)
+print(" Encrypted cipher", c)
+p, q = factor(n)
+print("Eve: Factors:", p, q)
+
+lambda_n = lcm(p - 1, q - 1)
+print("Eve: Lambda n:", lambda_n)
+
+d = get_d(e, lambda_n)
+print("Eve: Secret exponent :", d)
+
+m = c**d % n
+print("Eve: message", m)
